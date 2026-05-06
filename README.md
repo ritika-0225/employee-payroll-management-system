@@ -10,7 +10,7 @@ The system combines employee management, attendance tracking, GPS-based verifica
 
 Employees can securely log in, mark attendance using location-based check-in/check-out, and access their dashboard, while administrators can monitor employee records, attendance history, and payroll details.
 
----
+
 
 ## 🚀 Key Features
 - Secure role-based login system (Admin & Employee)
@@ -21,6 +21,7 @@ Employees can securely log in, mark attendance using location-based check-in/che
 - Salary calculation module
 - Admin dashboard for monitoring employees
 - Centralized MySQL database integration
+
 
 
 ## 🛠️ Technologies Used
@@ -41,7 +42,7 @@ Employees can securely log in, mark attendance using location-based check-in/che
 - Maven
 - Eclipse IDE
 
----
+
 
 ## 📂 Project Modules
 
@@ -66,7 +67,7 @@ Employees can securely log in, mark attendance using location-based check-in/che
 - View employee data
 - Manage payroll information
 
----
+
 
 ## 🗄️ Database Tables
 
@@ -87,7 +88,7 @@ Employees can securely log in, mark attendance using location-based check-in/che
 - Password
 - Role
 
----
+
 
 ## 📸 Screenshots
 
@@ -102,7 +103,7 @@ Included Screens:
 - Salary Calculation
 - Employee Records
 
----
+
 
 ## ▶️ How to Run the Project
 
@@ -125,7 +126,7 @@ Included Screens:
 http://localhost:8080
 ```
 
----
+
 
 ## 📈 Learning Outcomes
 
@@ -137,7 +138,7 @@ Through this project, we gained practical experience in:
 - Real-world project workflow
 - Team collaboration
 
----
+
 
 ## 🔮 Future Enhancements
 - Leave management system
@@ -147,13 +148,13 @@ Through this project, we gained practical experience in:
 - Analytics dashboard
 - Mobile application support
 
----
+
 
 ## 👩‍💻 Contributors
 - Ritika Patil
 - Shreya Wakhare
 
----
+
 
 ## 🎓 Project Information
 Final Year BCA Project (2025–2026)
