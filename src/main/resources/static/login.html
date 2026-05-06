@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payroll Management System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+/* DARK BACKGROUND */
+
+body{
+background:linear-gradient(135deg,#0f172a,#1f2937,#1e3a8a);
+color:#e5e7eb;
+}
+
+/* HEADER */
+
+.header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:18px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#0f172a;
+border-bottom:1px solid rgba(255,255,255,0.08);
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+color:#e5e7eb;
+font-size:20px;
+font-weight:600;
+}
+
+.logo i{
+color:#3b82f6;
+}
+
+.nav{
+display:flex;
+gap:30px;
+}
+
+.nav a{
+color:#cbd5f5;
+text-decoration:none;
+font-size:15px;
+transition:0.25s;
+}
+
+.nav a:hover{
+color:#60a5fa;
+}
+
+.demo-btn{
+padding:8px 18px;
+border-radius:6px;
+background:#3b82f6;
+color:white;
+font-weight:600;
+text-decoration:none;
+transition:0.25s;
+}
+
+.demo-btn:hover{
+background:#2563eb;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* HERO LOGIN */
+
+.hero{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding-top:80px;
+}
+
+.wrapper{
+display:flex;
+width:850px;
+height:450px;
+background:#111827;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 25px 60px rgba(0,0,0,0.6);
+transition:0.35s;
+}
+
+.wrapper:hover{
+transform:translateY(-6px);
+box-shadow:0 35px 70px rgba(0,0,0,0.8);
+}
+
+/* LEFT PANEL */
+
+.left{
+flex:1;
+background:linear-gradient(135deg,#1e293b,#1e3a8a);
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:40px;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+
+.left::before{
+content:"";
+position:absolute;
+width:260px;
+height:260px;
+background:rgba(255,255,255,0.05);
+border-radius:50%;
+top:-60px;
+right:-60px;
+}
+
+.left::after{
+content:"";
+position:absolute;
+width:180px;
+height:180px;
+background:rgba(255,255,255,0.05);
+border-radius:50%;
+bottom:-50px;
+left:-50px;
+}
+
+.left i{
+font-size:52px;
+margin-bottom:15px;
+color:#60a5fa;
+}
+
+.left h1{
+font-size:30px;
+margin-bottom:10px;
+}
+
+.left p{
+font-size:14px;
+opacity:0.8;
+max-width:250px;
+}
+
+/* RIGHT LOGIN */
+
+.right{
+flex:1;
+padding:40px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+background:#111827;
+}
+
+.right h2{
+margin-bottom:20px;
+letter-spacing:1px;
+color:#e5e7eb;
+}
+
+.input-group{
+position:relative;
+margin-bottom:18px;
+}
+
+.input-group input{
+width:100%;
+padding:12px 40px;
+border-radius:6px;
+border:1px solid #374151;
+outline:none;
+background:#1f2937;
+color:#e5e7eb;
+transition:0.25s;
+}
+
+.input-group input:focus{
+border-color:#3b82f6;
+box-shadow:0 0 0 3px rgba(59,130,246,0.2);
+}
+
+.input-group i{
+position:absolute;
+left:12px;
+top:50%;
+transform:translateY(-50%);
+color:#9ca3af;
+}
+
+.toggle-password{
+position:absolute;
+right:38px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:#9ca3af;
+}
+
+button{
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:6px;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+font-weight:600;
+transition:0.25s;
+}
+
+button:hover{
+background:#2563eb;
+transform:translateY(-2px);
+box-shadow:0 6px 14px rgba(0,0,0,0.4);
+}
+
+.error{
+color:#ef4444;
+font-size:13px;
+margin-bottom:10px;
+display:none;
+}
+
+/* FEATURES */
+
+.features{
+padding:120px 14%;
+background:#020617;
+}
+
+.features h2{
+text-align:center;
+font-size:40px;
+margin-bottom:90px;
+color:white;
+}
+
+.feature-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:60px;
+margin-bottom:100px;
+padding:50px 60px;
+border-radius:18px;
+border:2px solid #1e40af;
+background:#111827;
+transition:0.35s ease;
+}
+
+.feature-row:hover{
+transform:translateY(-8px);
+box-shadow:0 20px 45px rgba(0,0,0,0.6);
+border-color:transparent;
+background:#1f2937;
+}
+
+.feature-icon{
+font-size:48px;
+color:#3b82f6;
+min-width:90px;
+}
+
+.feature-text{
+flex:1;
+}
+
+.feature-text h3{
+font-size:28px;
+margin-bottom:14px;
+color:white;
+}
+
+.feature-text p{
+font-size:17px;
+color:#9ca3af;
+max-width:650px;
+line-height:1.6;
+}
+
+.feature-visual{
+font-size:90px;
+color:#3b82f6;
+opacity:0.1;
+}
+
+.feature-row:nth-child(even){
+flex-direction:row-reverse;
+}
+
+/* FOOTER */
+
+.footer{
+background:#020617;
+color:#9ca3af;
+text-align:center;
+padding:25px;
+font-size:13px;
+border-top:1px solid rgba(255,255,255,0.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">
+<i class="fa-solid fa-wallet"></i>
+<span>PayFlow</span>
+</div>
+
+<nav class="nav">
+<a href="#">Home</a>
+<a href="#features">Features</a>
+<a href="#footer">About</a>
+</nav>
+
+<a class="demo-btn" href="#">Login</a>
+
+</header>
+
+<section class="hero">
+
+<div class="wrapper">
+
+<div class="left">
+<i class="fa-solid fa-user-shield"></i>
+<h1>Payroll System</h1>
+<p>Secure employee payroll and attendance management.</p>
+</div>
+
+<div class="right">
+
+<h2>WELCOME</h2>
+
+<div class="error" id="errorMsg"></div>
+
+<div class="input-group">
+<i class="fa-solid fa-user"></i>
+<input type="text" id="username" placeholder="Username">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-lock"></i>
+<input type="password" id="password" placeholder="Password">
+
+<span class="toggle-password" onclick="togglePassword()">
+<i class="fa-solid fa-eye"></i>
+</span>
+
+</div>
+
+<button onclick="login()">Login</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="features" id="features">
+
+<h2>System Features</h2>
+
+<div class="feature-row">
+<div class="feature-icon"><i class="fa-solid fa-users"></i></div>
+<div class="feature-text">
+<h3>Employee Management</h3>
+<p>Maintain employee profiles and work records securely.</p>
+</div>
+<div class="feature-visual"><i class="fa-solid fa-id-card"></i></div>
+</div>
+
+<div class="feature-row">
+<div class="feature-icon"><i class="fa-solid fa-location-dot"></i></div>
+<div class="feature-text">
+<h3>GPS Attendance</h3>
+<p>Check-in and check-out using office location verification.</p>
+</div>
+<div class="feature-visual"><i class="fa-solid fa-map-location-dot"></i></div>
+</div>
+
+<div class="feature-row">
+<div class="feature-icon"><i class="fa-solid fa-calculator"></i></div>
+<div class="feature-text">
+<h3>Automated Payroll</h3>
+<p>Automatic salary calculation with accurate payslips.</p>
+</div>
+<div class="feature-visual"><i class="fa-solid fa-money-check-dollar"></i></div>
+</div>
+
+<div class="feature-row"><div class="feature-icon"><i class="fa-solid fa-file-invoice"></i></div>
+
+<div class="feature-text"> <h3>Payslip Generation</h3> <p>Generate downloadable payslips for employees.</p> </div> <div class="feature-visual"><i class="fa-solid fa-file-lines"></i></div> </div>
+<div class="feature-row"> <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div> <div class="feature-text"> <h3>Admin Dashboard</h3> <p>Monitor employees, payroll data and attendance easily.</p> </div> <div class="feature-visual"><i class="fa-solid fa-chart-column"></i></div> </div> <div class="feature-row"> <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+<div class="feature-text"> <h3>Secure Login</h3> <p>Separate login access for admin and employees.</p> </div> <div class="feature-visual"><i class="fa-solid fa-lock"></i></div> </div>
+
+</section>
+
+<div class="footer" id="footer">
+© 2026 Payroll Management System | BCA Final Year Project
+</div>
+
+<script>
+
+function togglePassword(){
+let pwd=document.getElementById("password");
+pwd.type=pwd.type==="password"?"text":"password";
+}
+
+function login(){
+
+let username=document.getElementById("username").value.trim();
+let password=document.getElementById("password").value.trim();
+let errorMsg=document.getElementById("errorMsg");
+
+errorMsg.style.display="none";
+
+if(username===""||password===""){
+errorMsg.innerText="Please enter username and password";
+errorMsg.style.display="block";
+return;
+}
+
+fetch("http://localhost:8080/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+username:username,
+password:password
+})
+})
+.then(res=>{
+
+if(!res.ok){
+throw new Error("Server error");
+}
+
+return res.json();
+
+})
+.then(data=>{
+
+console.log("Login response:",data);
+
+/* LOGIN SUCCESS */
+
+if(data.status==="success"){
+
+localStorage.setItem("role",data.role);
+localStorage.setItem("username",data.username);
+
+/* SAVE EMPLOYEE ID */
+
+if(data.empId){
+localStorage.setItem("empId",data.empId);
+}
+
+/* REDIRECT */
+
+if(data.role==="Admin"){
+window.location.href="dashboard.html";
+}else{
+window.location.href="employee-dashboard.html";
+}
+
+}
+
+/* LOGIN FAILED */
+
+else{
+errorMsg.innerText="Invalid credentials";
+errorMsg.style.display="block";
+}
+
+})
+.catch(err=>{
+
+console.log(err);
+
+errorMsg.innerText="Server error!";
+errorMsg.style.display="block";
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

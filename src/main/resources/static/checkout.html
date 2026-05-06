@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Check Out</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(135deg, #5f6fdc, #7b4bc4);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logout Button */
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: auto;
+}
+
+.logout-btn:hover {
+    opacity: 0.9;
+}
+
+/* Container */
+.container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    width: 350px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* Title */
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Button */
+.primary-btn {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #5f6fdc, #7b4bc4);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+/* Status Box */
+.status-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    display: none;
+}
+
+.success {
+    background: #eafaf1;
+    color: #27ae60;
+}
+
+.error {
+    background: #fdecea;
+    color: #e74c3c;
+}
+
+.time {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Payroll System</h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <i class="fa-solid fa-right-from-bracket" style="font-size:30px; color:#5f6fdc;"></i>
+        <h2>Check Out</h2>
+        <div class="subtitle">Mark your exit time</div>
+
+        <button class="primary-btn" onclick="checkout()">Check Out</button>
+
+        <div id="statusBox" class="status-box">
+            <div id="statusText"></div>
+            <div id="timeText" class="time"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+function logout() {
+    window.location.href = "login.html";
+}
+
+function showStatus(type, message, time="") {
+    let box = document.getElementById("statusBox");
+    let text = document.getElementById("statusText");
+    let timeText = document.getElementById("timeText");
+
+    box.style.display = "block";
+    box.className = "status-box " + type;
+
+    text.innerHTML = message;
+    timeText.innerHTML = time;
+}
+
+// ✅ UPDATED FUNCTION
+function checkout(){
+
+let empId = localStorage.getItem("empId");
+
+if(!empId){
+    showStatus("error","❌ Login again");
+    return;
+}
+
+fetch("http://localhost:8080/checkout?empId=" + empId,{
+method:"POST"
+})
+.then(res => res.json())
+.then(data => {
+
+    if(data.time){
+
+        let dateTime = data.time.split("T");
+        let date = dateTime[0];
+        let time = dateTime[1].split(".")[0];
+
+        showStatus(
+            "success",
+            "✅ Checkout Successful",
+            "Date: " + date + "<br>Time: " + time
+        );
+
+    } else {
+        showStatus("error","❌ " + data.message);
+    }
+
+})
+.catch(()=>{
+    showStatus("error","❌ Server Error");
+});
+
+}
+</script>
+
+</body>
+</html>

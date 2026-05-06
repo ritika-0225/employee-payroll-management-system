@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Attendance</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(135deg, #5f6fdc, #7b4bc4);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logout Button (FIXED) */
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: auto;   /* ✅ FIX */
+}
+
+.logout-btn:hover {
+    opacity: 0.9;
+}
+
+/* Container */
+.container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+    width: 350px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* Title */
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Main Button (SEPARATE CLASS) */
+.primary-btn {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #5f6fdc, #7b4bc4);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+/* Status Box */
+.status-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    display: none;
+}
+
+.success {
+    background: #eafaf1;
+    color: #27ae60;
+}
+
+.error {
+    background: #fdecea;
+    color: #e74c3c;
+}
+
+.time {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Payroll System</h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <i class="fa-solid fa-location-dot" style="font-size:30px; color:#5f6fdc;"></i>
+        <h2>Mark Attendance</h2>
+        <div class="subtitle">Ensure you're at office location</div>
+
+        <!-- ✅ FIXED BUTTON -->
+        <button class="primary-btn" onclick="markAttendance()">Mark Attendance</button>
+
+        <div id="statusBox" class="status-box">
+            <div id="statusText"></div>
+            <div id="timeText" class="time"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+	const officeLat = 18.4894;
+	const officeLng = 73.8213;
+
+	const allowedDistance = 2000; // 2km radius for Karvenagar
+
+	const empId = localStorage.getItem("empId");
+
+	function getDistance(lat1, lon1, lat2, lon2) {
+
+	    const R = 6371000;
+
+	    const toRad = (v)=> v*Math.PI/180;
+
+	    let dLat = toRad(lat2-lat1);
+	    let dLon = toRad(lon2-lon1);
+
+	    let a =
+	        Math.sin(dLat/2)*Math.sin(dLat/2) +
+	        Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*
+	        Math.sin(dLon/2)*Math.sin(dLon/2);
+
+	    let c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+
+	    return R*c;
+	}
+
+	function showStatus(type, message, time="") {
+
+	    let box = document.getElementById("statusBox");
+	    let text = document.getElementById("statusText");
+	    let timeText = document.getElementById("timeText");
+
+	    box.style.display = "block";
+	    box.className = "status-box " + type;
+		document.querySelector(".primary-btn").disabled = true;
+	    text.innerHTML = message;
+	    timeText.innerHTML = time;
+	}
+	
+	function markAttendance(){
+
+		if(!empId){
+		alert("Employee not logged in. Please login again.");
+		window.location.href="login.html";
+		return;
+		}
+
+	navigator.geolocation.getCurrentPosition(function(position){
+
+	let userLat = position.coords.latitude;
+	let userLng = position.coords.longitude;
+
+	let distance = getDistance(userLat,userLng,officeLat,officeLng);
+
+	if(distance <= allowedDistance){
+
+	fetch("http://localhost:8080/markAttendance",{
+	method:"POST",
+	headers:{"Content-Type":"application/json"},
+	body:JSON.stringify({
+	empId:empId,
+	lat:userLat,
+	lng:userLng
+	})
+	})
+	.then(res=>res.json())
+	.then(data=>{
+
+	let now = new Date();
+
+	showStatus(
+	"success",
+	"✅ Attendance Marked",
+	"Date: "+now.toISOString().split("T")[0] +
+	"<br>Time: "+now.toTimeString().split(" ")[0]
+	);
+
+	})
+	.catch(err=>{
+	console.log(err);
+	showStatus("error","❌ Attendance Failed");
+	});
+
+	}
+	else{
+
+	showStatus(
+	"error",
+	"❌ Outside office area<br>Distance: "+Math.round(distance)+" meters"
+	);
+
+	}
+
+	});
+
+	}
+
+</script>
+
+</body>
+</html>

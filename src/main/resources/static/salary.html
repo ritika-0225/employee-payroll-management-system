@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Salary Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+/* Navbar (SAME as employee page) */
+.navbar {
+    background: linear-gradient(135deg, #5f6fdc, #7b4bc4);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Container */
+.container {
+    padding: 40px;
+}
+
+/* Title */
+.title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Card (same feel as employee page) */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
+    max-width: 500px;
+}
+
+/* Form */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+/* Button */
+.calc-btn {
+    background: #5f6fdc;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.calc-btn:hover {
+    background: #4b5bd1;
+}
+
+/* Result Box */
+.result {
+    margin-top: 20px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    line-height: 1.8;
+}
+
+.result hr {
+    margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2>Payroll System</h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+
+    <div class="title">Salary Management</div>
+
+    <!-- Salary Card -->
+    <div class="card">
+
+        <h3>Calculate Salary</h3><br>
+
+        <div class="form-group">
+            <select id="employeeSelect">
+                <option value="">Select Employee</option>
+            </select>
+
+            <button class="calc-btn" onclick="calculate()">Calculate</button>
+        </div>
+
+        <div class="result" id="result"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+let employees = [];
+
+/* Logout */
+function logout() {
+    window.location.href = "login.html";
+}
+
+/* Load employees */
+fetch("http://localhost:8080/employees")
+.then(res => res.json())
+.then(data => {
+
+    employees = data;
+
+    let select = document.getElementById("employeeSelect");
+
+    data.forEach(emp => {
+        select.innerHTML += `
+            <option value="${emp.id}">
+                ${emp.id} - ${emp.name}
+            </option>
+        `;
+    });
+});
+
+/* Calculate salary */
+function calculate() {
+
+    let id = document.getElementById("employeeSelect").value;
+
+    if (id === "") {
+        alert("Please select employee");
+        return;
+    }
+
+    let emp = employees.find(e => e.id == id);
+
+    let basic = emp.salary;
+    let bonus = basic * 0.10;
+    let deduction = basic * 0.05;
+    let net = basic + bonus - deduction;
+
+    document.getElementById("result").innerHTML = `
+        <b>Employee:</b> ${emp.name}<br><br>
+
+        Basic Salary: ₹${basic}<br>
+        Bonus (10%): ₹${bonus}<br>
+        Deduction (5%): ₹${deduction}<br>
+
+        <hr>
+
+        <b>Net Salary: ₹${net}</b>
+    `;
+}
+
+</script>
+
+</body>
+</html>
