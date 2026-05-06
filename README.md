@@ -22,7 +22,6 @@ Employees can securely log in, mark attendance using location-based check-in/che
 - Admin dashboard for monitoring employees
 - Centralized MySQL database integration
 
----
 
 ## 🛠️ Technologies Used
 
